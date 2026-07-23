@@ -995,7 +995,7 @@
     transition: max-height 0.35s ease;
   }
   .hanja-trivia.expanded .trivia-content {
-    max-height: 400px;
+    max-height: 520px;
   }
   .hanja-trivia.expanded .trivia-prompt {
     display: none;
@@ -1360,7 +1360,7 @@
       <div class="hanja-trivia" id="trivia1">
         <div class="trivia-prompt" onclick="toggleTrivia('trivia1')">
           <span class="trivia-prompt-icon">📖</span>
-          <span class="trivia-prompt-text">이번 한자는 <b>헷갈리는 한자가 거의 없어요!</b> 그래서 퀴즈 대신 한자 상식으로 알아볼게요.</span>
+          <span class="trivia-prompt-text">이번 한자는 <b>'객'이라고 읽는 다른 한자가 거의 없어요!</b> 헷갈릴 일이 없으니, 퀴즈 대신 한자 상식으로 알아볼게요.</span>
           <span class="trivia-prompt-cta">눌러보기</span>
         </div>
         <div class="trivia-content">
@@ -1938,6 +1938,9 @@ function toggleTrivia(id) {
   const card = document.getElementById(id);
   if (!card) return;
   card.classList.add('expanded');
+  // 펼치자마자 바로 읽어주기 (카드를 다시 누르면 다시 읽어줘요)
+  const inner = card.querySelector('.trivia-content-inner');
+  if (inner) speakNote(inner);
 }
 
 // ── 📖 한자 상식 카드 읽어주기 ──
@@ -2353,6 +2356,9 @@ async function toggleTTS() {
 }
 
 function stopTTS() {
+  // 한자 상식 낭독(speakNote)도 함께 중지
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  document.querySelectorAll('.trivia-content-inner.speaking').forEach(el => el.classList.remove('speaking'));
   if (ttsPlaying) {
     window.speechSynthesis.cancel();
     ttsPlaying = false;

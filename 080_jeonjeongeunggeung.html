@@ -1392,26 +1392,15 @@
     <div class="ext-section" id="ext3">
       <div class="ext-header">
         <span class="ext-hanja">兢</span>
-        <span class="ext-eq">긍 = <b>조심하다</b></span>
-        <span class="ext-badge done" id="extBadge3">완료 ✓</span>
+        <span class="ext-eq">긍 = <b>조심하다</b> (앞에 나온 兢과 같아요!)</span>
+        <span class="ext-badge" id="extBadge3"></span>
       </div>
-      <div class="hanja-trivia" id="trivia3">
-        <div class="trivia-prompt" onclick="toggleTrivia('trivia3')">
-          <span class="trivia-prompt-icon">📖</span>
-          <span class="trivia-prompt-text">이번 한자는 <b>낱말로 만들 말이 거의 없어요!</b> 그래서 퀴즈 대신 한자 상식으로 알아볼게요.</span>
-          <span class="trivia-prompt-cta">눌러보기</span>
-        </div>
-        <div class="trivia-content">
-          <div class="trivia-content-inner" onclick="speakNote(this)">
-            <div class="hanja-trivia-title">📖 한자 상식</div>
-            <div class="hanja-trivia-meaning">兢(긍) — 뜻: <b>조심하다</b></div>
-            <div class="hanja-trivia-desc">💡 조심하다 긍(兢)은 전전긍긍에만 쓰여요. 소리가 같은 肯(긍정·수긍)이나 矜(긍지·자긍심)과는 전혀 다른 한자예요!</div>
-            <div class="hanja-trivia-words">
-              <span class="hanja-trivia-word">전전긍긍</span>
-            </div>
-            <span class="note-speak-icon">🔊</span>
-          </div>
-        </div>
+      <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">'긍'으로 소리 나는 한자는 여럿이에요! 다음 중 <b>兢(긍)이 들어간 말</b>을 고르세요.</div>
+      <div class="ext-options">
+        <div class="ext-opt" id="eo3-0" onclick="pickExt(3,0,false,'자긍심의 긍은 자랑할 긍(矜)이에요. 스스로 자랑스러워하는 마음이지요. 조심할 긍(兢)이 아니에요!')">자긍심</div>
+        <div class="ext-opt" id="eo3-1" onclick="pickExt(3,1,false,'긍정적의 긍은 즐길 긍(肯)이에요. 좋게 받아들인다는 뜻이지요. 조심할 긍(兢)이 아니에요!')">긍정적</div>
+        <div class="ext-opt" id="eo3-2" onclick="pickExt(3,2,false,'수긍의 긍도 즐길 긍(肯)이에요. 옳다고 고개를 끄덕인다는 뜻이지요. 조심할 긍(兢)이 아니에요!')">수긍</div>
+        <div class="ext-opt" id="eo3-3" onclick="pickExt(3,3,true,'조심하다 긍(兢)은 전전긍긍에서만 쓰여요. 몸을 잔뜩 움츠리고 조심하는 모습이지요!')">전전긍긍</div>
       </div>
       <div class="ext-feedback" id="ef3"></div>
     </div>
@@ -1924,11 +1913,11 @@ const extCorrect = [
   [0, 2],       // 戰: 전쟁, 도전
   [1, 3],       // 戰: 휴전, 전사
   [1],          // 兢: 전전긍긍
-  []            // 兢(두번째): 한자 상식, 퀴즈 없음
+  [3]           // 兢(두번째): 전전긍긍 (같은 음 肯·矜과 구별)
 ];
 const extSelected = [[], [], [], []];
-const extDone = [false, false, false, true]; // 兢(3)은 한자 상식
-let extDoneCount = 1;
+const extDone = [false, false, false, false];
+let extDoneCount = 0;
 
 // ── 📖 한자 상식 카드 펼치기 ──
 function toggleTrivia(id) {
