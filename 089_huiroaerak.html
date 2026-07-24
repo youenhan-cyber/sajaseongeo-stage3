@@ -859,6 +859,7 @@
     display: none;
   }
   .p1-result.show { display: block; }
+  .p1-result.miss { color: var(--muted); }
 
   /* ── 페이지 5: 어휘 확장 ── */
   .ext-section { padding: 4px 0 8px; }
@@ -1072,8 +1073,8 @@
     <div class="fq-label">⭐ 전체 뜻은?</div>
     <div class="fq-q">희로애락의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
-      <div class="fq-option" onclick="pickFinal(this, false)">언제나 기쁜 마음만 지닌다는 뜻</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">사람이 살면서 느끼는 온갖 감정을 이르는 뜻</div>
+      <div class="fq-option" onclick="pickFinal(this, true)">사람이 느끼는 온갖 감정을 이르는 뜻</div>
+      <div class="fq-option" onclick="pickFinal(this, false)">언제나 기쁜 마음만 지니고 산다는 뜻</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1111,9 +1112,9 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>《중용》을 펼친 스승이 제자들에게 물은 것은 무엇인가요?</div>
         <div class="comp-options">
-          <div class="comp-option" onclick="pickComp(0, this, false)">사람의 몸에는 어떤 뼈들이 있을까</div>
+          <div class="comp-option" onclick="pickComp(0, this, false)">사람의 몸에는 어떤 뼈들이 들어 있을까</div>
           <div class="comp-option" onclick="pickComp(0, this, true)">사람의 마음에는 어떤 감정들이 있을까</div>
-          <div class="comp-option" onclick="pickComp(0, this, false)">사람은 무엇을 먹고 살아야 할까</div>
+          <div class="comp-option" onclick="pickComp(0, this, false)">사람은 무엇을 먹고 살아가야 할까</div>
         </div>
         <div class="feedback-msg" id="fb0"></div>
       </div>
@@ -1161,9 +1162,9 @@
     <div class="cq-label">✅ 다시 확인해요</div>
     <div style="font-size:15px; font-weight:700; line-height:1.6;">희로애락의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
-      <div class="cq-option" onclick="pickConfirm(this, true)">기쁨·노여움·슬픔·즐거움, 사람의 온갖 감정</div>
-      <div class="cq-option" onclick="pickConfirm(this, false)">감정을 조금도 드러내지 않는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, false)">기쁜 일만 골라서 기억하는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, true)">기쁨·노여움·슬픔·즐거움의 온갖 감정</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">감정을 조금도 겉으로 드러내지 않는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">기쁜 일만 골라서 오래 기억하는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
   </div>
@@ -1353,10 +1354,10 @@
   <div class="card grade-card" id="gradeCard">
     <div style="font-size:12px; font-weight:700; color:var(--accent); letter-spacing:2px; margin-bottom:14px; text-align:center;">🏅 오늘의 성과</div>
     <div class="grade-display">
-      <div class="grade-gem" id="gradeGem">💎</div>
+      <div class="grade-gem" id="gradeGem">✨</div>
       <div class="grade-info">
-        <div class="grade-title" id="gradeTitle">다이아</div>
-        <div class="grade-desc" id="gradeDesc">완벽해요! 하나도 안 틀렸어요!</div>
+        <div class="grade-title" id="gradeTitle">채점 중...</div>
+        <div class="grade-desc" id="gradeDesc">오늘의 등급을 확인해 볼까요?</div>
       </div>
     </div>
     <div class="grade-bar-row">
@@ -1408,6 +1409,9 @@ let situationDone = false;
 let confirmDone = false;
 let totalScore = 0;
 let earnedScore = 0;
+let p1Scored = false;
+let p1Missed = false;
+let extMissed = [false, false, false, false];
 let draggingTile = null;
 let wrongCount = 0; // 오답 누른 횟수
 
@@ -1443,17 +1447,17 @@ function goComplete() {
 
   // ── 오늘의 등급 계산 ──
   const grades = [
-    { key: 'diamond', gem: '💎', title: '다이아!', desc: '완벽해요! 하나도 안 틀리지 않았어요!', elemId: 'gi-diamond', wrong: 0 },
-    { key: 'gold',    gem: '🥇', title: '골드!',   desc: '아주 잘했어요! 1번 틀렸어요.',          elemId: 'gi-gold',    wrong: 1 },
-    { key: 'silver',  gem: '🥈', title: '실버!',   desc: '잘했어요! 2번 틀렸어요.',               elemId: 'gi-silver',  wrong: 2 },
-    { key: 'bronze',  gem: '🥉', title: '브론즈',  desc: '3번 이상 틀렸어요. 다시 도전해봐요!',    elemId: 'gi-bronze',  wrong: 99 },
+    { key: 'diamond', gem: '💎', title: '다이아!', desc: '완벽에 가까워요! 아주 잘했어요!',       elemId: 'gi-diamond', wrong: 1 },
+    { key: 'gold',    gem: '🥇', title: '골드!',   desc: '아주 잘했어요! 조금만 더 하면 다이아!', elemId: 'gi-gold',    wrong: 3 },
+    { key: 'silver',  gem: '🥈', title: '실버!',   desc: '잘했어요! 헷갈린 것만 다시 볼까요?',    elemId: 'gi-silver',  wrong: 5 },
+    { key: 'bronze',  gem: '🥉', title: '브론즈',  desc: '끝까지 해냈어요! 다시 도전해봐요!',      elemId: 'gi-bronze',  wrong: 99 },
   ];
 
   let grade;
-  if (wrongCount === 0)      grade = grades[0];
-  else if (wrongCount === 1) grade = grades[1];
-  else if (wrongCount === 2) grade = grades[2];
-  else                       grade = grades[3];
+  if (wrongCount <= 1)      grade = grades[0];
+  else if (wrongCount <= 3) grade = grades[1];
+  else if (wrongCount <= 5) grade = grades[2];
+  else                      grade = grades[3];
 
   setTimeout(() => {
     document.getElementById('gradeGem').textContent = grade.gem;
@@ -1473,7 +1477,7 @@ function goComplete() {
     const prevGrade = prog['huiroaerak']?.grade;
     // 더 좋은 등급이면 업데이트
     const gradeOrder = { diamond:4, gold:3, silver:2, bronze:1 };
-    const newGradeKey = wrongCount === 0 ? 'diamond' : wrongCount === 1 ? 'gold' : wrongCount === 2 ? 'silver' : 'bronze';
+    const newGradeKey = grade.key;
     if (!prevGrade || (gradeOrder[newGradeKey] > gradeOrder[prevGrade])) {
       prog['huiroaerak'] = { grade: newGradeKey, date: new Date().toISOString() };
       localStorage.setItem('sajasungeo_progress', JSON.stringify(prog));
@@ -1484,10 +1488,13 @@ function goComplete() {
 
   // ── 카드 누적 (localStorage) — 재도전 시 중복 적립 방지 ──
   let totalCards = 0;
-  const isRetrying = sessionStorage.getItem('retrying') === 'true';
   try {
     totalCards = parseInt(localStorage.getItem('hanjaCards') || '0');
-    if (!isRetrying) {
+    // 편마다 한 번만 적립 — 재도전이든 홈에서 다시 들어오든 중복되지 않음
+    const awarded = JSON.parse(localStorage.getItem('sajasungeo_cardAwarded') || '[]');
+    if (!awarded.includes('huiroaerak')) {
+      awarded.push('huiroaerak');
+      localStorage.setItem('sajasungeo_cardAwarded', JSON.stringify(awarded));
       totalCards += 4;
       localStorage.setItem('hanjaCards', totalCards);
     }
@@ -1650,18 +1657,30 @@ function emptySlot(slot) {
   slot.appendChild(numSpan);
   slot.classList.remove('filled');
   document.getElementById('p1Result').classList.remove('show');
+  document.getElementById('p1Result').classList.remove('miss');
   document.getElementById('btn1').disabled = true;
 }
 
 function checkP1() {
   // 위치별 글자만 맞으면 정답 처리 (똑같이 생긴 타일이 두 개일 땐 어느 쪽을 넣어도 인정)
   const correct = slots.every((tileId, i) => tileId && document.getElementById(tileId).dataset.char === answer[i]);
+  const p1r = document.getElementById('p1Result');
+  if (!p1r.dataset.okText) p1r.dataset.okText = p1r.textContent;
+  const p1Filled = slots.every(x => x);
   if (correct) {
-    document.getElementById('p1Result').classList.add('show');
+    p1r.textContent = p1r.dataset.okText;
+    p1r.classList.remove('miss');
+    p1r.classList.add('show');
     document.getElementById('btn1').disabled = false;
-    earnedScore += 10; totalScore += 10;
+    if (!p1Scored) { p1Scored = true; earnedScore += 10; totalScore += 10; }
+  } else if (p1Filled) {
+    if (!p1Missed) { p1Missed = true; wrongCount++; }
+    p1r.textContent = '🤔 순서를 다시 살펴보세요!';
+    p1r.classList.add('miss');
+    p1r.classList.add('show');
   } else {
-    totalScore += 0;
+    p1r.classList.remove('show');
+    p1r.classList.remove('miss');
   }
 }
 
@@ -1680,6 +1699,7 @@ function pickChar(idx, el, correct) {
   } else {
     el.classList.add('selected-wrong');
     ci.classList.add('wrong');
+    wrongCount++;
   }
   totalScore += 5;
   charDone[idx] = true;
@@ -1707,7 +1727,7 @@ function pickFinal(el, correct) {
     el.classList.add('selected-wrong');
     msg.textContent = '🤔 다시 읽어보세요. 사람이 느끼는 온갖 감정을 이르는 말이에요!';
     msg.className = 'result-msg show no';
-    totalScore += 10;
+    totalScore += 10; wrongCount++;
     document.getElementById('btn2').disabled = false;
   }
 }
@@ -1732,7 +1752,7 @@ function pickComp(idx, el, correct) {
     opts.forEach(o => { if (o.onclick && o.onclick.toString().includes('true')) o.classList.add('selected-correct'); });
     fb.textContent = '💡 아쉬워요! 정답을 확인해보세요.';
     fb.className = 'feedback-msg show no';
-    totalScore += 10;
+    totalScore += 10; wrongCount++;
   }
   compCount++;
   if (compCount === 2) {
@@ -1787,7 +1807,7 @@ function pickSituation(idx) {
     } else {
       msg.textContent = '💡 ①번과 ④번이 희로애락에 어울리는 상황이에요!';
       msg.className = 'result-msg show no';
-      totalScore += 10;
+      totalScore += 10; wrongCount++;
     }
     setTimeout(() => { document.getElementById('confirmQuiz').style.display = 'block'; }, 500);
   }
@@ -1827,7 +1847,7 @@ function pickExt(secIdx, optIdx, isCorrect, hint) {
 
   // 오답은 완료 여부 상관없이 항상 클릭 가능
   if (!isCorrect) {
-    wrongCount++; // 오답 카운트
+    if (!extMissed[secIdx]) { extMissed[secIdx] = true; wrongCount++; } // 구역당 1회만
     el.classList.add('revealed-wrong');
     addFeedbackLine(secIdx, '❌ ' + hint, 'no');
     if (window.speechSynthesis) {
@@ -2169,7 +2189,10 @@ async function toggleTTS() {
       if (speechVoice) utter.voice = speechVoice;
       else if (narrVoice) utter.voice = narrVoice;
     }
-    const pauseAfter = [2, 4, 6];
+    // 컷이 바뀌는 지점(다음 줄이 내레이션)에서 한 박자 쉼 — 대본이 바뀌어도 자동으로 맞춰짐
+    const pauseAfter = storyScript
+      .map((it, i) => (storyScript[i + 1] && storyScript[i + 1].type === 'narr') ? i : -1)
+      .filter(i => i >= 0);
     utter.onend = () => {
       ttsCurrentIdx++;
       setTimeout(speakNext, pauseAfter.includes(ttsCurrentIdx - 1) ? 500 : 150);
@@ -2205,7 +2228,7 @@ function pickConfirm(el, correct) {
     el.classList.add('selected-wrong');
     msg.textContent = '💡 정답은 "기쁨·노여움·슬픔·즐거움, 사람의 온갖 감정"이에요!';
     msg.className = 'result-msg show no';
-    totalScore += 10;
+    totalScore += 10; wrongCount++;
   }
   document.getElementById('btn4').disabled = false;
 }

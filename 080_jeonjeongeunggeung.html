@@ -265,6 +265,12 @@
     font-weight: 700;
     color: var(--accent);
   }
+  .char-note {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-left: auto;
+  }
   .char-options {
     display: flex;
     gap: 10px;
@@ -859,6 +865,7 @@
     display: none;
   }
   .p1-result.show { display: block; }
+  .p1-result.miss { color: var(--muted); }
 
   /* ── 페이지 5: 어휘 확장 ── */
   .ext-section { padding: 4px 0 8px; }
@@ -1147,10 +1154,11 @@
         <div class="char-header">
           <span class="char-big">戰</span>
           <span class="char-sound">전</span>
+          <span class="char-note">戰을 두 번 겹쳐 쓰면?</span>
         </div>
         <div class="char-options">
-          <div class="char-option" onclick="pickChar(1, this, false)"><span class="opt-emoji">💪</span>씩씩하다</div>
-          <div class="char-option" onclick="pickChar(1, this, true)"><span class="opt-emoji">😰</span>벌벌 떨다</div>
+          <div class="char-option" onclick="pickChar(1, this, true)"><span class="opt-emoji">😰</span>몹시 떠는 모습</div>
+          <div class="char-option" onclick="pickChar(1, this, false)"><span class="opt-emoji">🙂</span>가끔 떠는 모습</div>
         </div>
       </div>
 
@@ -1171,10 +1179,11 @@
         <div class="char-header">
           <span class="char-big">兢</span>
           <span class="char-sound">긍</span>
+          <span class="char-note">兢을 두 번 겹쳐 쓰면?</span>
         </div>
         <div class="char-options">
-          <div class="char-option" onclick="pickChar(3, this, false)"><span class="opt-emoji">😌</span>마음을 놓다</div>
-          <div class="char-option" onclick="pickChar(3, this, true)"><span class="opt-emoji">🧊</span>조마조마하다</div>
+          <div class="char-option" onclick="pickChar(3, this, false)"><span class="opt-emoji">😌</span>조금만 조심하는 모습</div>
+          <div class="char-option" onclick="pickChar(3, this, true)"><span class="opt-emoji">😖</span>몹시 조심하는 모습</div>
         </div>
       </div>
 
@@ -1186,8 +1195,8 @@
     <div class="fq-label">⭐ 전체 뜻은?</div>
     <div class="fq-q">전전긍긍의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
-      <div class="fq-option" onclick="pickFinal(this, false)">싸울 때마다 씩씩하게 앞장선다는 뜻</div>
       <div class="fq-option" onclick="pickFinal(this, true)">몹시 두려워 벌벌 떨며 조심한다는 뜻</div>
+      <div class="fq-option" onclick="pickFinal(this, false)">싸울 때마다 씩씩하게 앞장서 나선다는 뜻</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1225,18 +1234,18 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>시에서는 사람들의 두려운 마음을 무엇에 빗대었나요?</div>
         <div class="comp-options">
-          <div class="comp-option" onclick="pickComp(0, this, false)">넓은 들판을 마음껏 달리는 것에</div>
-          <div class="comp-option" onclick="pickComp(0, this, true)">깊은 못가에 선 듯, 얇은 얼음을 밟는 듯한 것에</div>
-          <div class="comp-option" onclick="pickComp(0, this, false)">따뜻한 방에서 편히 잠드는 것에</div>
+          <div class="comp-option" onclick="pickComp(0, this, false)">넓은 들판을 마음껏 뛰어다니는 것에</div>
+          <div class="comp-option" onclick="pickComp(0, this, true)">깊은 못가에 서고 살얼음을 밟는 것에</div>
+          <div class="comp-option" onclick="pickComp(0, this, false)">따뜻한 방에서 아주 편히 잠드는 것에</div>
         </div>
         <div class="feedback-msg" id="fb0"></div>
       </div>
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">2</span>이 모습을 담은 시는 어느 책에 실려 있나요?</div>
         <div class="comp-options">
-          <div class="comp-option" onclick="pickComp(1, this, false)">홍만종이 쓴 순오지</div>
-          <div class="comp-option" onclick="pickComp(1, this, false)">당나라 역사책 구당서</div>
-          <div class="comp-option" onclick="pickComp(1, this, true)">시경에 실린 소민이라는 시</div>
+          <div class="comp-option" onclick="pickComp(1, this, false)">조선 홍만종이 쓴 순오지</div>
+          <div class="comp-option" onclick="pickComp(1, this, false)">당나라 역사책인 구당서</div>
+          <div class="comp-option" onclick="pickComp(1, this, true)">시경의 소민이라는 시</div>
         </div>
         <div class="feedback-msg" id="fb1"></div>
       </div>
@@ -1277,7 +1286,7 @@
     <div class="cq-options">
       <div class="cq-option" onclick="pickConfirm(this, false)">싸움에서 물러서지 않고 끝까지 버티는 것</div>
       <div class="cq-option" onclick="pickConfirm(this, true)">몹시 두려워 벌벌 떨며 조심하는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, false)">걱정 없이 마음을 푹 놓는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">아무 걱정 없이 마음을 푹 놓는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
   </div>
@@ -1390,17 +1399,25 @@
 
     <!-- 兢(긍) = 조심하다 (두 번째) — 한자 상식 -->
     <div class="ext-section" id="ext3">
-      <div class="ext-header">
-        <span class="ext-hanja">兢</span>
-        <span class="ext-eq">긍 = <b>조심하다</b> (앞에 나온 兢과 같아요!)</span>
-        <span class="ext-badge" id="extBadge3"></span>
-      </div>
-      <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">'긍'으로 소리 나는 한자는 여럿이에요! 다음 중 <b>兢(긍)이 들어간 말</b>을 고르세요.</div>
-      <div class="ext-options">
-        <div class="ext-opt" id="eo3-0" onclick="pickExt(3,0,false,'자긍심의 긍은 자랑할 긍(矜)이에요. 스스로 자랑스러워하는 마음이지요. 조심할 긍(兢)이 아니에요!')">자긍심</div>
-        <div class="ext-opt" id="eo3-1" onclick="pickExt(3,1,false,'긍정적의 긍은 즐길 긍(肯)이에요. 좋게 받아들인다는 뜻이지요. 조심할 긍(兢)이 아니에요!')">긍정적</div>
-        <div class="ext-opt" id="eo3-2" onclick="pickExt(3,2,false,'수긍의 긍도 즐길 긍(肯)이에요. 옳다고 고개를 끄덕인다는 뜻이지요. 조심할 긍(兢)이 아니에요!')">수긍</div>
-        <div class="ext-opt" id="eo3-3" onclick="pickExt(3,3,true,'조심하다 긍(兢)은 전전긍긍에서만 쓰여요. 몸을 잔뜩 움츠리고 조심하는 모습이지요!')">전전긍긍</div>
+      <div class="hanja-trivia" id="trivia3">
+        <div class="trivia-prompt" onclick="toggleTrivia('trivia3')">
+          <span class="trivia-prompt-icon">📖</span>
+          <span class="trivia-prompt-text">이번 한자 <b>兢(긍)은 '전전긍긍' 말고는 쓰이는 낱말이 거의 없어요!</b> 퀴즈 대신 한자 상식으로 알아볼게요.</span>
+          <span class="trivia-prompt-cta">눌러보기</span>
+        </div>
+        <div class="trivia-content">
+          <div class="trivia-content-inner" onclick="speakNote(this)">
+            <div class="hanja-trivia-title">📖 한자 상식</div>
+            <div class="hanja-trivia-meaning">兢(긍) — 뜻: <b>조심하다·삼가다</b></div>
+            <div class="hanja-trivia-desc">💡 兢은 낱말에는 거의 쓰이지 않고 '전전긍긍'에서만 만나는 글자예요. 대신 소리가 같은 '긍'이 여럿 있어요. 수긍할 긍(肯)은 긍정·수긍에 쓰이고, 자랑할 긍(矜)은 자긍심·긍지에 쓰인답니다.</div>
+            <div class="hanja-trivia-words">
+              <span class="hanja-trivia-word">전전긍긍</span>
+              <span class="hanja-trivia-word">긍정 = 肯</span>
+              <span class="hanja-trivia-word">자긍심 = 矜</span>
+            </div>
+            <span class="note-speak-icon">🔊</span>
+          </div>
+        </div>
       </div>
       <div class="ext-feedback" id="ef3"></div>
     </div>
@@ -1467,10 +1484,10 @@
   <div class="card grade-card" id="gradeCard">
     <div style="font-size:12px; font-weight:700; color:var(--accent); letter-spacing:2px; margin-bottom:14px; text-align:center;">🏅 오늘의 성과</div>
     <div class="grade-display">
-      <div class="grade-gem" id="gradeGem">💎</div>
+      <div class="grade-gem" id="gradeGem">✨</div>
       <div class="grade-info">
-        <div class="grade-title" id="gradeTitle">다이아</div>
-        <div class="grade-desc" id="gradeDesc">완벽해요! 하나도 안 틀렸어요!</div>
+        <div class="grade-title" id="gradeTitle">채점 중...</div>
+        <div class="grade-desc" id="gradeDesc">오늘의 등급을 확인해 볼까요?</div>
       </div>
     </div>
     <div class="grade-bar-row">
@@ -1522,6 +1539,9 @@ let situationDone = false;
 let confirmDone = false;
 let totalScore = 0;
 let earnedScore = 0;
+let p1Scored = false;
+let p1Missed = false;
+let extMissed = [false, false, false, false];
 let draggingTile = null;
 let wrongCount = 0; // 오답 누른 횟수
 
@@ -1557,17 +1577,17 @@ function goComplete() {
 
   // ── 오늘의 등급 계산 ──
   const grades = [
-    { key: 'diamond', gem: '💎', title: '다이아!', desc: '완벽해요! 하나도 안 틀리지 않았어요!', elemId: 'gi-diamond', wrong: 0 },
-    { key: 'gold',    gem: '🥇', title: '골드!',   desc: '아주 잘했어요! 1번 틀렸어요.',          elemId: 'gi-gold',    wrong: 1 },
-    { key: 'silver',  gem: '🥈', title: '실버!',   desc: '잘했어요! 2번 틀렸어요.',               elemId: 'gi-silver',  wrong: 2 },
-    { key: 'bronze',  gem: '🥉', title: '브론즈',  desc: '3번 이상 틀렸어요. 다시 도전해봐요!',    elemId: 'gi-bronze',  wrong: 99 },
+    { key: 'diamond', gem: '💎', title: '다이아!', desc: '완벽에 가까워요! 아주 잘했어요!',       elemId: 'gi-diamond', wrong: 1 },
+    { key: 'gold',    gem: '🥇', title: '골드!',   desc: '아주 잘했어요! 조금만 더 하면 다이아!', elemId: 'gi-gold',    wrong: 3 },
+    { key: 'silver',  gem: '🥈', title: '실버!',   desc: '잘했어요! 헷갈린 것만 다시 볼까요?',    elemId: 'gi-silver',  wrong: 5 },
+    { key: 'bronze',  gem: '🥉', title: '브론즈',  desc: '끝까지 해냈어요! 다시 도전해봐요!',      elemId: 'gi-bronze',  wrong: 99 },
   ];
 
   let grade;
-  if (wrongCount === 0)      grade = grades[0];
-  else if (wrongCount === 1) grade = grades[1];
-  else if (wrongCount === 2) grade = grades[2];
-  else                       grade = grades[3];
+  if (wrongCount <= 1)      grade = grades[0];
+  else if (wrongCount <= 3) grade = grades[1];
+  else if (wrongCount <= 5) grade = grades[2];
+  else                      grade = grades[3];
 
   setTimeout(() => {
     document.getElementById('gradeGem').textContent = grade.gem;
@@ -1587,7 +1607,7 @@ function goComplete() {
     const prevGrade = prog['jeonjeongeunggeung']?.grade;
     // 더 좋은 등급이면 업데이트
     const gradeOrder = { diamond:4, gold:3, silver:2, bronze:1 };
-    const newGradeKey = wrongCount === 0 ? 'diamond' : wrongCount === 1 ? 'gold' : wrongCount === 2 ? 'silver' : 'bronze';
+    const newGradeKey = grade.key;
     if (!prevGrade || (gradeOrder[newGradeKey] > gradeOrder[prevGrade])) {
       prog['jeonjeongeunggeung'] = { grade: newGradeKey, date: new Date().toISOString() };
       localStorage.setItem('sajasungeo_progress', JSON.stringify(prog));
@@ -1598,10 +1618,13 @@ function goComplete() {
 
   // ── 카드 누적 (localStorage) — 재도전 시 중복 적립 방지 ──
   let totalCards = 0;
-  const isRetrying = sessionStorage.getItem('retrying') === 'true';
   try {
     totalCards = parseInt(localStorage.getItem('hanjaCards') || '0');
-    if (!isRetrying) {
+    // 편마다 한 번만 적립 — 재도전이든 홈에서 다시 들어오든 중복되지 않음
+    const awarded = JSON.parse(localStorage.getItem('sajasungeo_cardAwarded') || '[]');
+    if (!awarded.includes('jeonjeongeunggeung')) {
+      awarded.push('jeonjeongeunggeung');
+      localStorage.setItem('sajasungeo_cardAwarded', JSON.stringify(awarded));
       totalCards += 4;
       localStorage.setItem('hanjaCards', totalCards);
     }
@@ -1764,18 +1787,30 @@ function emptySlot(slot) {
   slot.appendChild(numSpan);
   slot.classList.remove('filled');
   document.getElementById('p1Result').classList.remove('show');
+  document.getElementById('p1Result').classList.remove('miss');
   document.getElementById('btn1').disabled = true;
 }
 
 function checkP1() {
   // 위치별 글자만 맞으면 정답 처리 (똑같이 생긴 타일이 두 개일 땐 어느 쪽을 넣어도 인정)
   const correct = slots.every((tileId, i) => tileId && document.getElementById(tileId).dataset.char === answer[i]);
+  const p1r = document.getElementById('p1Result');
+  if (!p1r.dataset.okText) p1r.dataset.okText = p1r.textContent;
+  const p1Filled = slots.every(x => x);
   if (correct) {
-    document.getElementById('p1Result').classList.add('show');
+    p1r.textContent = p1r.dataset.okText;
+    p1r.classList.remove('miss');
+    p1r.classList.add('show');
     document.getElementById('btn1').disabled = false;
-    earnedScore += 10; totalScore += 10;
+    if (!p1Scored) { p1Scored = true; earnedScore += 10; totalScore += 10; }
+  } else if (p1Filled) {
+    if (!p1Missed) { p1Missed = true; wrongCount++; }
+    p1r.textContent = '🤔 순서를 다시 살펴보세요!';
+    p1r.classList.add('miss');
+    p1r.classList.add('show');
   } else {
-    totalScore += 0;
+    p1r.classList.remove('show');
+    p1r.classList.remove('miss');
   }
 }
 
@@ -1794,6 +1829,7 @@ function pickChar(idx, el, correct) {
   } else {
     el.classList.add('selected-wrong');
     ci.classList.add('wrong');
+    wrongCount++;
   }
   totalScore += 5;
   charDone[idx] = true;
@@ -1821,7 +1857,7 @@ function pickFinal(el, correct) {
     el.classList.add('selected-wrong');
     msg.textContent = '🤔 다시 읽어보세요. 몹시 두려워 벌벌 떨며 조심한다는 뜻이에요!';
     msg.className = 'result-msg show no';
-    totalScore += 10;
+    totalScore += 10; wrongCount++;
     document.getElementById('btn2').disabled = false;
   }
 }
@@ -1846,7 +1882,7 @@ function pickComp(idx, el, correct) {
     opts.forEach(o => { if (o.onclick && o.onclick.toString().includes('true')) o.classList.add('selected-correct'); });
     fb.textContent = '💡 아쉬워요! 정답을 확인해보세요.';
     fb.className = 'feedback-msg show no';
-    totalScore += 10;
+    totalScore += 10; wrongCount++;
   }
   compCount++;
   if (compCount === 2) {
@@ -1901,7 +1937,7 @@ function pickSituation(idx) {
     } else {
       msg.textContent = '💡 ③번과 ④번이 전전긍긍에 어울리는 상황이에요!';
       msg.className = 'result-msg show no';
-      totalScore += 10;
+      totalScore += 10; wrongCount++;
     }
     setTimeout(() => { document.getElementById('confirmQuiz').style.display = 'block'; }, 500);
   }
@@ -1913,17 +1949,20 @@ const extCorrect = [
   [0, 2],       // 戰: 전쟁, 도전
   [1, 3],       // 戰: 휴전, 전사
   [1],          // 兢: 전전긍긍
-  [3]           // 兢(두번째): 전전긍긍 (같은 음 肯·矜과 구별)
+  []            // 眈/兢: 한자 상식, 퀴즈 없음
 ];
 const extSelected = [[], [], [], []];
 const extDone = [false, false, false, false];
-let extDoneCount = 0;
+let extDoneCount = 1;
 
 // ── 📖 한자 상식 카드 펼치기 ──
 function toggleTrivia(id) {
   const card = document.getElementById(id);
   if (!card) return;
   card.classList.add('expanded');
+  // 펼치자마자 바로 읽어주기 (카드를 다시 누르면 다시 읽어줘요)
+  const inner = card.querySelector('.trivia-content-inner');
+  if (inner) speakNote(inner);
 }
 
 // ── 📖 한자 상식 카드 읽어주기 ──
@@ -1985,7 +2024,7 @@ function pickExt(secIdx, optIdx, isCorrect, hint) {
 
   // 오답은 완료 여부 상관없이 항상 클릭 가능
   if (!isCorrect) {
-    wrongCount++; // 오답 카운트
+    if (!extMissed[secIdx]) { extMissed[secIdx] = true; wrongCount++; } // 구역당 1회만
     el.classList.add('revealed-wrong');
     addFeedbackLine(secIdx, '❌ ' + hint, 'no');
     if (window.speechSynthesis) {
@@ -2327,7 +2366,10 @@ async function toggleTTS() {
       if (speechVoice) utter.voice = speechVoice;
       else if (narrVoice) utter.voice = narrVoice;
     }
-    const pauseAfter = [2, 4, 6];
+    // 컷이 바뀌는 지점(다음 줄이 내레이션)에서 한 박자 쉼 — 대본이 바뀌어도 자동으로 맞춰짐
+    const pauseAfter = storyScript
+      .map((it, i) => (storyScript[i + 1] && storyScript[i + 1].type === 'narr') ? i : -1)
+      .filter(i => i >= 0);
     utter.onend = () => {
       ttsCurrentIdx++;
       setTimeout(speakNext, pauseAfter.includes(ttsCurrentIdx - 1) ? 500 : 150);
@@ -2363,7 +2405,7 @@ function pickConfirm(el, correct) {
     el.classList.add('selected-wrong');
     msg.textContent = '💡 정답은 "몹시 두려워 벌벌 떨며 조심하는 것"이에요!';
     msg.className = 'result-msg show no';
-    totalScore += 10;
+    totalScore += 10; wrongCount++;
   }
   document.getElementById('btn4').disabled = false;
 }

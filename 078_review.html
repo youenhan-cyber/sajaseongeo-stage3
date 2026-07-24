@@ -650,12 +650,33 @@ function goComplete() {
 
   document.getElementById('scoreDisplay').textContent = score + '/5';
 
+
+  // 점수에 따른 등급 (B안: 5/5 레전더리 · 3~4 다이아 · 그 이하 골드)
+  var tier;
+  if (score === 5)      tier = { key:'legendary', fw:'\u{1F3C6}', title:'\ubcf5\uc2b5 \ub9c8\uc2a4\ud130 \ub2ec\uc131!', sub:'\ub2e4\uc12f \uc0ac\uc790\uc131\uc5b4\ub97c \ubaa8\ub450 \uc815\ubcf5\ud588\uc5b4\uc694!', icon:'\u{1F451}', name:'\ub808\uc804\ub354\ub9ac \uce74\ub4dc', label:'\u{1F48E} \ub2e4\uc774\uc544\ubaac\ub4dc\ubcf4\ub2e4 \ud55c \ub2e8\uacc4 \uc704!' };
+  else if (score >= 3)  tier = { key:'diamond',   fw:'\u{1F48E}', title:'\ubcf5\uc2b5 \uc644\ub8cc!', sub:'\uc798\ud588\uc5b4\uc694! \uc870\uae08\ub9cc \ub354 \ud558\uba74 \ub9c8\uc2a4\ud130\uc608\uc694.', icon:'\u{1F48E}', name:'\ub2e4\uc774\uc544 \uce74\ub4dc', label:'\u{1F3C6} \ub808\uc804\ub354\ub9ac\uae4c\uc9c0 \ud55c \uac78\uc74c!' };
+  else                  tier = { key:'gold',      fw:'\u{1F947}', title:'\ubcf5\uc2b5 \uc644\ub8cc!', sub:'\ub05d\uae4c\uc9c0 \ud574\ub0c8\uc5b4\uc694! \ub2e4\uc2dc \ud480\uba74 \ub354 \uc798\ud560 \uac70\uc608\uc694.', icon:'\u{1F947}', name:'\uace8\ub4dc \uce74\ub4dc', label:'\ub2e4\uc2dc \ub3c4\uc804\ud558\uba74 \uce74\ub4dc\uac00 \uc62c\ub77c\uac00\uc694!' };
+
+  var _set = function(sel, val) { var el = document.querySelector(sel); if (el) el.textContent = val; };
+  _set('.legend-firework', tier.fw);
+  _set('.legend-title', tier.title);
+  _set('.legend-sub', tier.sub);
+  _set('.legend-card-icon', tier.icon);
+  _set('.legend-card-name', tier.name);
+  _set('.legend-card-label', tier.label);
+
   try {
-    localStorage.setItem('sajasungeo_legendary_count',
-      (parseInt(localStorage.getItem('sajasungeo_legendary_count') || '0') + 1).toString());
+    if (tier.key === 'legendary') {
+      localStorage.setItem('sajasungeo_legendary_count',
+        (parseInt(localStorage.getItem('sajasungeo_legendary_count') || '0') + 1).toString());
+    }
     const prog = JSON.parse(localStorage.getItem('sajasungeo_progress') || '{}');
-    prog['review_078'] = { grade: 'legendary', date: new Date().toISOString() };
-    localStorage.setItem('sajasungeo_progress', JSON.stringify(prog));
+    const gradeOrder = { legendary:5, diamond:4, gold:3, silver:2, bronze:1 };
+    const prevGrade = prog['review_078']?.grade;
+    if (!prevGrade || (gradeOrder[tier.key] > gradeOrder[prevGrade])) {
+      prog['review_078'] = { grade: tier.key, date: new Date().toISOString() };
+      localStorage.setItem('sajasungeo_progress', JSON.stringify(prog));
+    }
   } catch(e) {}
 }
 
